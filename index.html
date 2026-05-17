@@ -3,71 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Послание Таро от Юлии Подшибякиной</title>
-</head>
-<body style="background:#12001d;color:white;font-family:Arial;text-align:center;padding:40px;">
 
-<h1>Послание Таро ✨</h1>
+<title>Послание Таро</title>
 
-<img src="PFOTO.jpg" style="width:240px;height:240px;border-radius:50%;object-fit:cover;border:4px solid #8c62ff;">
+<style>
 
-<p style="max-width:500px;margin:30px auto;line-height:1.7;">
-Сконцентрируйся на своём вопросе и позволь пространству показать главное 🌙
-</p>
-
-<textarea placeholder="Напиши свой вопрос..."
-style="width:90%;max-width:500px;height:120px;border-radius:20px;padding:20px;background:#2a1240;color:white;border:none;"></textarea>
-
-<br><br>
-
-<button onclick="drawCards()" style="padding:18px 30px;border:none;border-radius:20px;background:#9f7cff;color:#14001f;font-size:18px;font-weight:bold;">
-🔮 Получить послание
-</button>
-
-<script>
-
-function drawCards() {
-
-const question = document.querySelector("textarea").value;
-
-if(question.trim() === "") {
-alert("Напиши свой вопрос ✨");
-return;
+body{
+background:#12001d;
+color:white;
+font-family:Arial;
+text-align:center;
+padding:40px;
 }
 
-alert("🌙 Пространство услышало твой вопрос...\n\nСейчас начинается раскрытие послания ✨");
-
+textarea{
+width:90%;
+max-width:500px;
+height:120px;
+border-radius:20px;
+padding:20px;
+background:#2a1240;
+color:white;
+border:none;
+font-size:16px;
 }
 
-<script>
-
-function drawCards() {
-
-const question = document.querySelector("textarea").value;
-
-if(question.trim() === "") {
-alert("Напиши свой вопрос ✨");
-return;
+button{
+padding:18px 30px;
+border:none;
+border-radius:20px;
+background:#9f7cff;
+color:#14001f;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+margin-top:20px;
 }
 
-const messages = [
-
-"🌙 Пространство показывает, что сейчас тебе важно перестать удерживать прошлое. Очень много энергии уходит в переживания и внутреннее напряжение. Карты говорят: впереди начинается новый этап, но для него нужно отпустить то, что уже завершилось.",
-
-"✨ Сейчас вокруг тебя формируется совершенно новая энергия. Пространство показывает, что ты слишком долго сомневалась в себе и своих силах. Очень скоро ситуация начнёт меняться, если ты позволишь себе действовать смелее.",
-
-"🔮 Карты показывают сильную эмоциональную перегруженность. Ты слишком долго несла на себе чужие переживания и ответственность. Сейчас тебе важно начать выбирать себя и своё внутреннее состояние.",
-
-"🌙 Пространство показывает, что ответ на твой вопрос уже постепенно раскрывается. Сейчас не время торопить события. Очень многое решится в ближайшее время само, если ты перестанешь жить в постоянном напряжении."
-
-];
-
-const randomMessage =
-messages[Math.floor(Math.random() * messages.length)];
-
-document.body.innerHTML += `
-
-<div style="
+.result{
+display:none;
 margin-top:40px;
 background:rgba(255,255,255,0.08);
 padding:30px;
@@ -77,21 +51,81 @@ margin-left:auto;
 margin-right:auto;
 line-height:1.9;
 font-size:18px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Послание Таро ✨</h1>
+
+<img src="PFOTO.jpg"
+style="
+width:240px;
+height:240px;
+border-radius:50%;
+object-fit:cover;
+border:4px solid #8c62ff;
 ">
 
-<h2 style="
-margin-bottom:20px;
-font-size:32px;
-">
-✨ Твоё послание
-</h2>
+<p style="max-width:500px;margin:30px auto;line-height:1.7;">
+Сконцентрируйся на своём вопросе и позволь пространству показать главное 🌙
+</p>
 
-${randomMessage}
+<textarea id="question"
+placeholder="Напиши свой вопрос..."></textarea>
+
+<br>
+
+<button onclick="drawCards()">
+🔮 Получить послание
+</button>
+
+<div class="result" id="result">
+
+<h2>✨ Твоё послание</h2>
+
+<p id="resultText"></p>
 
 </div>
 
-`;
+<script>
+
+function drawCards(){
+
+const question =
+document.getElementById("question").value;
+
+if(question.trim() === ""){
+alert("Напиши свой вопрос ✨");
+return;
+}
+
+const messages = [
+
+"🌙 Пространство показывает, что сейчас тебе важно перестать удерживать прошлое. Очень много энергии уходит в переживания и внутреннее напряжение.",
+
+"✨ Сейчас вокруг тебя формируется совершенно новая энергия. Очень скоро ситуация начнёт меняться, если ты позволишь себе действовать смелее.",
+
+"🔮 Карты показывают сильную эмоциональную перегруженность. Сейчас тебе важно начать выбирать себя и своё внутреннее состояние.",
+
+"🌙 Пространство показывает, что ответ на твой вопрос уже постепенно раскрывается. Сейчас не время торопить события."
+
+];
+
+const randomMessage =
+messages[Math.floor(Math.random() * messages.length)];
+
+document.getElementById("result").style.display = "block";
+
+document.getElementById("resultText").innerText =
+randomMessage;
 
 }
 
 </script>
+
+</body>
+</html>

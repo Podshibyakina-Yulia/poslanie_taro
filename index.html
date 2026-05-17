@@ -20,9 +20,26 @@ style="width:90%;max-width:500px;height:120px;border-radius:20px;padding:20px;ba
 
 <br><br>
 
-<button style="padding:18px 30px;border:none;border-radius:20px;background:#9f7cff;color:#14001f;font-size:18px;font-weight:bold;">
+<button onclick="drawCards()" style="padding:18px 30px;border:none;border-radius:20px;background:#9f7cff;color:#14001f;font-size:18px;font-weight:bold;">
 🔮 Получить послание
 </button>
+
+<script>
+
+function drawCards() {
+
+const question = document.querySelector("textarea").value;
+
+if(question.trim() === "") {
+alert("Напиши свой вопрос ✨");
+return;
+}
+
+alert("🌙 Пространство услышало твой вопрос...\n\nСейчас начинается раскрытие послания ✨");
+
+}
+
+</script>
 
 </body>
 </html>

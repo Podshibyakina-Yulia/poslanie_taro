@@ -1,24 +1,51 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Послание Таро от Юлии Подшибякиной</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Послание Таро — Юлия Подшибякина</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-body{
+
+*{
 margin:0;
 padding:0;
-background:linear-gradient(180deg,#0a0014,#1d0030);
-font-family:Arial,sans-serif;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Montserrat',sans-serif;
+background:
+radial-gradient(circle at top, rgba(155,120,255,0.25), transparent 35%),
+linear-gradient(180deg,#05000d 0%, #140020 100%);
 color:white;
-text-align:center;
+overflow-x:hidden;
+}
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+background-image:radial-gradient(rgba(255,255,255,0.25) 1px, transparent 1px);
+background-size:40px 40px;
+opacity:0.15;
+pointer-events:none;
 }
 
 .container{
-max-width:760px;
+max-width:900px;
 margin:auto;
 padding:30px 20px 80px;
+position:relative;
+z-index:2;
+}
+
+.header{
+text-align:center;
+margin-bottom:40px;
 }
 
 .avatar{
@@ -26,172 +53,269 @@ width:220px;
 height:220px;
 border-radius:50%;
 object-fit:cover;
-border:4px solid #9f7cff;
-box-shadow:0 0 35px rgba(159,124,255,0.5);
+border:4px solid rgba(255,255,255,0.15);
+box-shadow:0 0 40px rgba(167,121,255,0.4);
 }
 
 h1{
-font-size:42px;
-margin-top:20px;
-margin-bottom:10px;
+font-family:'Cormorant Garamond',serif;
+font-size:58px;
+margin-top:24px;
 }
 
 .subtitle{
-font-size:20px;
+font-size:22px;
 color:#d9c9ff;
-margin-bottom:30px;
+margin-top:10px;
 }
 
 .description{
-max-width:560px;
+max-width:680px;
 margin:30px auto;
 line-height:1.8;
-font-size:19px;
+font-size:18px;
+color:#ece8ff;
+}
+
+.question-box{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.08);
+padding:28px;
+border-radius:32px;
+backdrop-filter:blur(14px);
 }
 
 textarea{
-width:90%;
-max-width:560px;
-height:120px;
+width:100%;
+height:130px;
+border:none;
+outline:none;
+resize:none;
+background:rgba(255,255,255,0.06);
+border-radius:24px;
+padding:20px;
+font-size:16px;
+color:white;
+font-family:'Montserrat',sans-serif;
+}
+
+textarea::placeholder{
+color:#b9afd7;
+}
+
+.main-btn{
+margin-top:20px;
+width:100%;
 padding:20px;
 border:none;
 border-radius:24px;
-background:#2a1240;
-color:white;
-font-size:16px;
-outline:none;
+font-size:18px;
+font-weight:600;
+cursor:pointer;
+background:linear-gradient(135deg,#9d79ff,#ddd1ff);
+color:#14001f;
+transition:0.3s;
 }
 
-button{
-margin-top:24px;
-padding:18px 34px;
-border:none;
-border-radius:20px;
-background:linear-gradient(135deg,#9f7cff,#d7c7ff);
-color:#14001f;
-font-size:18px;
-font-weight:bold;
-cursor:pointer;
+.main-btn:hover{
+transform:scale(1.02);
 }
 
 .cards{
 display:none;
 justify-content:center;
-gap:16px;
-margin-top:45px;
+gap:24px;
 flex-wrap:wrap;
+margin-top:50px;
 }
 
 .card{
-width:130px;
-height:200px;
-border-radius:22px;
-background:linear-gradient(180deg,#341255,#14001f);
+width:180px;
+height:300px;
+perspective:1000px;
+}
+
+.card-inner{
+position:relative;
+width:100%;
+height:100%;
+transition:transform 1s;
+transform-style:preserve-3d;
+}
+
+.card.open .card-inner{
+transform:rotateY(180deg);
+}
+
+.card-front,
+.card-back{
+position:absolute;
+width:100%;
+height:100%;
+backface-visibility:hidden;
+border-radius:26px;
+overflow:hidden;
+}
+
+.card-front{
+background:
+linear-gradient(180deg,#2b0b4c,#120019);
 border:2px solid rgba(255,255,255,0.1);
-box-shadow:0 0 25px rgba(159,124,255,0.3);
+box-shadow:0 0 35px rgba(161,115,255,0.35);
 display:flex;
 align-items:center;
 justify-content:center;
-padding:10px;
-font-size:20px;
-line-height:1.4;
-font-weight:bold;
+font-size:40px;
+}
+
+.card-back{
+transform:rotateY(180deg);
+background:
+linear-gradient(180deg,#43206c,#1a0229);
+border:2px solid rgba(255,255,255,0.12);
+padding:18px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+box-shadow:0 0 40px rgba(161,115,255,0.45);
+}
+
+.card-title{
+font-family:'Cormorant Garamond',serif;
+font-size:28px;
+}
+
+.card-symbol{
+font-size:64px;
+margin:auto;
+}
+
+.card-energy{
+font-size:14px;
+line-height:1.6;
+color:#efe9ff;
 }
 
 .result{
 display:none;
-margin-top:40px;
-background:rgba(255,255,255,0.08);
-padding:35px;
-border-radius:28px;
-line-height:1.9;
+margin-top:50px;
+background:rgba(255,255,255,0.06);
+border:1px solid rgba(255,255,255,0.08);
+padding:36px;
+border-radius:32px;
+line-height:2;
 font-size:18px;
-text-align:left;
-white-space:pre-line;
+color:#f3f0ff;
 }
 
 .result h2{
+font-family:'Cormorant Garamond',serif;
+font-size:42px;
 text-align:center;
-}
-
-.buttons{
-display:flex;
-flex-direction:column;
-gap:14px;
-margin-top:30px;
+margin-bottom:24px;
 }
 
 .contact{
-display:block;
-padding:18px;
-border-radius:18px;
-text-decoration:none;
-font-size:17px;
-font-weight:bold;
+margin-top:40px;
 text-align:center;
 }
 
+.contact-title{
+font-size:22px;
+margin-bottom:20px;
+color:#e4d8ff;
+}
+
+.contact-buttons{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.contact-btn{
+padding:18px;
+border-radius:20px;
+text-decoration:none;
+font-weight:600;
+font-size:17px;
+}
+
 .telegram{
-background:linear-gradient(135deg,#9f7cff,#d7c7ff);
+background:linear-gradient(135deg,#9d79ff,#ddd1ff);
 color:#14001f;
 }
 
 .max{
 background:rgba(255,255,255,0.08);
-border:1px solid rgba(255,255,255,0.1);
 color:white;
+border:1px solid rgba(255,255,255,0.1);
 }
+
+@media(max-width:700px){
+
+h1{
+font-size:44px;
+}
+
+.card{
+width:150px;
+height:250px;
+}
+
+.cards{
+gap:12px;
+}
+
+}
+
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
-<img src="PFOTO.jpg" class="avatar" alt="Юлия">
+<div class="header">
+<img src="PFOTO.jpg" class="avatar">
 
 <h1>Послание Таро</h1>
 <div class="subtitle">от Юлии Подшибякиной ✨</div>
 
 <div class="description">
-Сконцентрируйся на своём вопросе и позволь пространству показать тебе главное 🌙
+Задай свой вопрос пространству.
+Выбери энергию своего расклада.
+И позволь картам показать тебе главное 🌙
+</div>
 </div>
 
+<div class="question-box">
 <textarea id="question" placeholder="Напиши свой вопрос..."></textarea>
 
-<br>
-
-<button onclick="drawTarot()">
-🔮 Получить послание
+<button class="main-btn" onclick="startReading()">
+🔮 Получить расклад
 </button>
-
-<div class="cards" id="cards">
-<div class="card" id="card1"></div>
-<div class="card" id="card2"></div>
-<div class="card" id="card3"></div>
 </div>
+
+<div class="cards" id="cards"></div>
 
 <div class="result" id="result">
-<h2>✨ Твоё послание</h2>
-
+<h2>Твое послание 🌙</h2>
 <div id="resultText"></div>
 
-<div class="buttons">
-
-<a class="contact telegram"
-href="https://t.me/podshibyakina_yuliya"
-target="_blank">
-✨ Получить личный расклад в Telegram
-</a>
-
-<a class="contact max"
-href="https://max.ru/u/f9LHodD0cOIX_eXMjjTvHh3JNH9qGgtBEpBTIIj3X0YVu6utxYSyGRzK2Zk"
-target="_blank">
-💫 Получить личный расклад в MAX
-</a>
-
+<div class="contact">
+<div class="contact-title">
+✨ Хочешь личный глубокий расклад от Юлии?
 </div>
 
+<div class="contact-buttons">
+<a class="contact-btn telegram" href="https://t.me/podshibyakina_yuliya" target="_blank">
+✨ Написать в Telegram
+</a>
+
+<a class="contact-btn max" href="https://max.ru/u/f9LHodD0cOIX_eXMjjTvHh3JNH9qGgtBEpBTIIj3X0YVu6utxYSyGRzK2Zk" target="_blank">
+💫 Написать в MAX
+</a>
+</div>
+</div>
 </div>
 
 </div>
@@ -199,30 +323,62 @@ target="_blank">
 <script>
 
 const tarotDeck = [
-
-{name:'Луна',meaning:'скрытые эмоции, тревожность, сомнения'},
-{name:'Башня',meaning:'разрушение старого и резкие перемены'},
-{name:'Звезда',meaning:'надежда, исцеление и светлый период'},
-{name:'Солнце',meaning:'успех, ясность и раскрытие'},
-{name:'Смерть',meaning:'глубокая трансформация и завершение этапа'},
-{name:'Мир',meaning:'новый уровень и завершение цикла'},
-{name:'Сила',meaning:'внутренняя устойчивость и энергия'},
-{name:'Колесо Фортуны',meaning:'судьбоносный поворот и изменения'},
-{name:'Жрица',meaning:'интуиция и скрытые процессы'},
-{name:'Императрица',meaning:'женская энергия и изобилие'},
-{name:'Паж Кубков',meaning:'новые чувства и эмоциональность'},
-{name:'Королева Кубков',meaning:'интуиция и чувствительность'},
-{name:'Рыцарь Жезлов',meaning:'активность, страсть и движение'},
-{name:'Король Пентаклей',meaning:'стабильность и финансовая устойчивость'}
-
+{
+name:'Луна',
+symbol:'🌙',
+energy:'Скрытые эмоции, тревожность, внутренние сомнения.',
+meaning:'Сейчас пространство показывает, что часть твоих переживаний связана со страхом будущего и внутренней нестабильностью.'
+},
+{
+name:'Башня',
+symbol:'⚡',
+energy:'Резкие перемены, разрушение старого.',
+meaning:'Пространство буквально выводит тебя из старого состояния. Что-то больше не может оставаться прежним.'
+},
+{
+name:'Звезда',
+symbol:'✨',
+energy:'Исцеление, надежда, новый этап.',
+meaning:'После сложного периода начинается восстановление. Пространство открывает тебе новый путь.'
+},
+{
+name:'Солнце',
+symbol:'☀️',
+energy:'Ясность, успех, раскрытие энергии.',
+meaning:'Карты показывают мощную энергию проявленности и выхода к более счастливому этапу.'
+},
+{
+name:'Жрица',
+symbol:'🔮',
+energy:'Интуиция, тайные процессы.',
+meaning:'Очень многое сейчас скрыто от тебя. Ответы приходят через внутренние ощущения, а не через контроль.'
+},
+{
+name:'Императрица',
+symbol:'👑',
+energy:'Женская сила, изобилие.',
+meaning:'Тебе важно перестать обесценивать себя. Пространство показывает раскрытие женской энергии.'
+},
+{
+name:'Колесо Фортуны',
+symbol:'🪐',
+energy:'Судьбоносный поворот.',
+meaning:'Сейчас начинается цикл перемен. Жизнь постепенно выводит тебя в новый этап.'
+},
+{
+name:'Смерть',
+symbol:'🖤',
+energy:'Глубокая трансформация.',
+meaning:'Карты говорят о завершении старого периода. Без этого обновление невозможно.'
+}
 ];
 
-function getCards(){
+function getRandomCards(){
 const shuffled = [...tarotDeck].sort(() => 0.5 - Math.random());
 return shuffled.slice(0,3);
 }
 
-function drawTarot(){
+function startReading(){
 
 const question = document.getElementById('question').value;
 
@@ -231,31 +387,59 @@ alert('Напиши свой вопрос ✨');
 return;
 }
 
-const cards = getCards();
+const cards = getRandomCards();
 
-document.getElementById('cards').style.display = 'flex';
+const cardsContainer = document.getElementById('cards');
+cardsContainer.innerHTML = '';
+cardsContainer.style.display = 'flex';
 
-document.getElementById('card1').innerText = cards[0].name;
-document.getElementById('card2').innerText = cards[1].name;
-document.getElementById('card3').innerText = cards[2].name;
+cards.forEach((card,index)=>{
 
-const message = `
-🌙 Пространство показывает важный период внутренних изменений.
+const cardElement = document.createElement('div');
+cardElement.className = 'card';
 
-✨ ${cards[0].name} — ${cards[0].meaning}
-✨ ${cards[1].name} — ${cards[1].meaning}
-✨ ${cards[2].name} — ${cards[2].meaning}
-
-Карты говорят о глубокой трансформации и необходимости отпустить старые переживания. Сейчас тебе важно довериться жизни и своим внутренним ощущениям.
+cardElement.innerHTML = `
+<div class="card-inner">
+<div class="card-front">✦</div>
+<div class="card-back">
+<div class="card-title">${card.name}</div>
+<div class="card-symbol">${card.symbol}</div>
+<div class="card-energy">${card.energy}</div>
+</div>
+</div>
 `;
 
-document.getElementById('result').style.display = 'block';
+cardsContainer.appendChild(cardElement);
 
-document.getElementById('resultText').innerText = message;
+setTimeout(()=>{
+cardElement.classList.add('open');
+},700 + (index * 600));
 
-document.getElementById('result').scrollIntoView({
-behavior:'smooth'
 });
+
+const fullMessage = `
+🌙 Твой вопрос сейчас связан с важным внутренним переходом.
+
+${cards[0].meaning}
+
+${cards[1].meaning}
+
+${cards[2].meaning}
+
+Пространство показывает, что сейчас тебе важно не пытаться удерживать старую реальность. Очень многое начинает меняться глубже, чем кажется на первый взгляд. Этот расклад говорит о периоде внутренней трансформации, после которого твоя жизнь уже не будет ощущаться прежней.
+`;
+
+setTimeout(()=>{
+
+const result = document.getElementById('result');
+const resultText = document.getElementById('resultText');
+
+result.style.display = 'block';
+resultText.innerText = fullMessage;
+
+result.scrollIntoView({behavior:'smooth'});
+
+},3000);
 
 }
 

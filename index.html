@@ -112,27 +112,309 @@ alert('Напиши свой вопрос ✨');
 return;
 }
 
-const messages = [
-'🌙 Пространство показывает, что сейчас тебе важно перестать удерживать прошлое. Очень много энергии уходит в переживания и внутреннее напряжение.',
+<script>
 
-'✨ Сейчас вокруг тебя формируется совершенно новая энергия. Очень скоро ситуация начнёт меняться, если ты позволишь себе действовать смелее.',
+const tarotDeck = [
 
-'🔮 Карты показывают сильную эмоциональную перегруженность. Сейчас тебе важно начать выбирать себя и своё внутреннее состояние.',
+{
+name:'Шут',
+type:'major',
+meaning:'новый этап, спонтанность, начало пути'
+},
 
-'🌙 Пространство показывает, что ответ на твой вопрос уже постепенно раскрывается. Сейчас не время торопить события.'
+{
+name:'Маг',
+type:'major',
+meaning:'сила влияния, проявленность, управление ситуацией'
+},
+
+{
+name:'Жрица',
+type:'major',
+meaning:'интуиция, скрытые процессы, внутреннее знание'
+},
+
+{
+name:'Императрица',
+type:'major',
+meaning:'женская энергия, изобилие, раскрытие'
+},
+
+{
+name:'Император',
+type:'major',
+meaning:'контроль, структура, ответственность'
+},
+
+{
+name:'Иерофант',
+type:'major',
+meaning:'обучение, духовность, важный опыт'
+},
+
+{
+name:'Влюбленные',
+type:'major',
+meaning:'выбор, отношения, эмоциональная связь'
+},
+
+{
+name:'Колесница',
+type:'major',
+meaning:'движение вперед, перемены, прорыв'
+},
+
+{
+name:'Сила',
+type:'major',
+meaning:'внутренняя устойчивость, энергия, преодоление'
+},
+
+{
+name:'Отшельник',
+type:'major',
+meaning:'пауза, переосмысление, внутренний поиск'
+},
+
+{
+name:'Колесо Фортуны',
+type:'major',
+meaning:'смена цикла, судьбоносные события, поворот'
+},
+
+{
+name:'Справедливость',
+type:'major',
+meaning:'кармические процессы, честность, последствия'
+},
+
+{
+name:'Повешенный',
+type:'major',
+meaning:'задержка, необходимость отпустить контроль'
+},
+
+{
+name:'Смерть',
+type:'major',
+meaning:'глубокая трансформация, завершение старого'
+},
+
+{
+name:'Умеренность',
+type:'major',
+meaning:'восстановление, баланс, постепенные изменения'
+},
+
+{
+name:'Дьявол',
+type:'major',
+meaning:'зависимость, страхи, привязки'
+},
+
+{
+name:'Башня',
+type:'major',
+meaning:'резкие перемены, разрушение иллюзий'
+},
+
+{
+name:'Звезда',
+type:'major',
+meaning:'надежда, исцеление, светлый период'
+},
+
+{
+name:'Луна',
+type:'major',
+meaning:'тревожность, скрытые эмоции, сомнения'
+},
+
+{
+name:'Солнце',
+type:'major',
+meaning:'радость, ясность, успех'
+},
+
+{
+name:'Суд',
+type:'major',
+meaning:'пробуждение, освобождение, важное решение'
+},
+
+{
+name:'Мир',
+type:'major',
+meaning:'завершение этапа, выход на новый уровень'
+},
+
+{
+name:'Паж Кубков',
+type:'court',
+meaning:'эмоциональность, романтичность, новые чувства'
+},
+
+{
+name:'Рыцарь Кубков',
+type:'court',
+meaning:'эмоциональные действия, чувства, движение к любви'
+},
+
+{
+name:'Королева Кубков',
+type:'court',
+meaning:'глубокая чувствительность, интуиция, женская мудрость'
+},
+
+{
+name:'Король Кубков',
+type:'court',
+meaning:'эмоциональная зрелость, спокойствие, поддержка'
+},
+
+{
+name:'Паж Мечей',
+type:'court',
+meaning:'напряжение, наблюдение, недоверие'
+},
+
+{
+name:'Рыцарь Мечей',
+type:'court',
+meaning:'конфликтность, резкость, стремительные решения'
+},
+
+{
+name:'Королева Мечей',
+type:'court',
+meaning:'холодный анализ, дистанция, честность'
+},
+
+{
+name:'Король Мечей',
+type:'court',
+meaning:'контроль, интеллект, жесткие решения'
+},
+
+{
+name:'Паж Пентаклей',
+type:'court',
+meaning:'новые возможности, обучение, деньги'
+},
+
+{
+name:'Рыцарь Пентаклей',
+type:'court',
+meaning:'стабильность, медленное развитие, терпение'
+},
+
+{
+name:'Королева Пентаклей',
+type:'court',
+meaning:'изобилие, забота о себе, женская стабильность'
+},
+
+{
+name:'Король Пентаклей',
+type:'court',
+meaning:'финансовая устойчивость, уверенность, надежность'
+},
+
+{
+name:'Паж Жезлов',
+type:'court',
+meaning:'новая энергия, вдохновение, импульс'
+},
+
+{
+name:'Рыцарь Жезлов',
+type:'court',
+meaning:'страсть, активность, риск'
+},
+
+{
+name:'Королева Жезлов',
+type:'court',
+meaning:'харизма, уверенность, сильная женская энергия'
+},
+
+{
+name:'Король Жезлов',
+type:'court',
+meaning:'лидерство, влияние, проявленность'
+}
+
 ];
 
-const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+function getRandomCards(){
 
-const result = document.getElementById('result');
+const shuffled = [...tarotDeck]
+.sort(() => 0.5 - Math.random());
+
+return shuffled.slice(0,3);
+
+}
+
+function generateMessage(cards){
+
+const majorCards = cards.filter(card => card.type === 'major');
+
+let intro = '🌙 Пространство показывает важный период внутренних изменений. ';
+
+if(majorCards.length >= 2){
+intro = '🔮 Выпавшие старшие арканы говорят о судьбоносном этапе и глубокой трансформации. ';
+}
+
+const meanings = cards.map(card => card.meaning);
+
+return `
+${intro}
+
+Сейчас в твоей жизни особенно проявлены энергии:
+
+✨ ${cards[0].name} — ${cards[0].meaning}
+✨ ${cards[1].name} — ${cards[1].meaning}
+✨ ${cards[2].name} — ${cards[2].meaning}
+
+Карты показывают сочетание тем:
+${meanings.join(', ')}.
+
+Очень важно сейчас не пытаться удерживать старое состояние и позволить жизни постепенно вывести тебя в новый этап. Пространство показывает, что многие ответы уже начинают раскрываться, даже если пока ты видишь не всю картину полностью.
+`;
+
+}
+
+function drawTarot(){
+
+const question = document.getElementById('question').value;
+
+if(question.trim() === ''){
+alert('Напиши свой вопрос ✨');
+return;
+}
+
+const cards = getRandomCards();
+
+const result = generateMessage(cards);
+
+cardsContainer.style.display = 'flex';
+
+card1.innerText = cards[0].name;
+card2.innerText = cards[1].name;
+card3.innerText = cards[2].name;
+
+resultBlock.style.display = 'block';
+resultText.innerText = result;
+
+resultBlock.scrollIntoView({behavior:'smooth'});
+
+}
+
+const cardsContainer = document.getElementById('cards');
+const card1 = document.getElementById('card1');
+const card2 = document.getElementById('card2');
+const card3 = document.getElementById('card3');
+const resultBlock = document.getElementById('result');
 const resultText = document.getElementById('resultText');
 
-result.style.display = 'block';
-resultText.innerText = randomMessage;
-
-});
-
 </script>
-
-</body>
-</html>

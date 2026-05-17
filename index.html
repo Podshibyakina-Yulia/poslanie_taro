@@ -1,19 +1,16 @@
+```html
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Послание Таро</title>
 
 <style>
-
 body{
 background:#12001d;
 color:white;
-font-family:Arial;
+font-family:Arial,sans-serif;
 text-align:center;
 padding:40px;
 }
@@ -76,76 +73,66 @@ margin-right:auto;
 line-height:1.9;
 font-size:18px;
 }
-
 </style>
-
 </head>
 
 <body>
 
 <h1>Послание Таро ✨</h1>
 
-<img src="PFOTO.jpg" class="avatar">
+<img src="PFOTO.jpg" class="avatar" alt="Юлия">
 
 <div class="description">
 Сконцентрируйся на своём вопросе и позволь пространству показать главное 🌙
 </div>
 
-<textarea
-id="question"
-placeholder="Напиши свой вопрос..."></textarea>
+<textarea id="question" placeholder="Напиши свой вопрос..."></textarea>
 
 <br>
 
-<button onclick="drawCards()">
+<button id="tarotButton">
 🔮 Получить послание
 </button>
 
 <div class="result" id="result">
-
 <h2>✨ Твоё послание</h2>
-
 <p id="resultText"></p>
-
 </div>
 
 <script>
 
-function drawCards(){
+const button = document.getElementById('tarotButton');
 
-const question =
-document.getElementById("question").value;
+button.addEventListener('click', function(){
 
-if(question.trim() === ""){
-alert("Напиши свой вопрос ✨");
+const question = document.getElementById('question').value;
+
+if(question.trim() === ''){
+alert('Напиши свой вопрос ✨');
 return;
 }
 
 const messages = [
+'🌙 Пространство показывает, что сейчас тебе важно перестать удерживать прошлое. Очень много энергии уходит в переживания и внутреннее напряжение.',
 
-"🌙 Пространство показывает, что сейчас тебе важно перестать удерживать прошлое. Очень много энергии уходит в переживания и внутреннее напряжение.",
+'✨ Сейчас вокруг тебя формируется совершенно новая энергия. Очень скоро ситуация начнёт меняться, если ты позволишь себе действовать смелее.',
 
-"✨ Сейчас вокруг тебя формируется совершенно новая энергия. Очень скоро ситуация начнёт меняться, если ты позволишь себе действовать смелее.",
+'🔮 Карты показывают сильную эмоциональную перегруженность. Сейчас тебе важно начать выбирать себя и своё внутреннее состояние.',
 
-"🔮 Карты показывают сильную эмоциональную перегруженность. Сейчас тебе важно начать выбирать себя и своё внутреннее состояние.",
-
-"🌙 Пространство показывает, что ответ на твой вопрос уже постепенно раскрывается. Сейчас не время торопить события."
-
+'🌙 Пространство показывает, что ответ на твой вопрос уже постепенно раскрывается. Сейчас не время торопить события.'
 ];
 
-const randomMessage =
-messages[Math.floor(Math.random() * messages.length)];
+const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
-document.getElementById("result").style.display =
-"block";
+const result = document.getElementById('result');
+const resultText = document.getElementById('resultText');
 
-document.getElementById("resultText").innerText =
-randomMessage;
+result.style.display = 'block';
+resultText.innerText = randomMessage;
 
-}
+});
 
 </script>
 
 </body>
-
 </html>

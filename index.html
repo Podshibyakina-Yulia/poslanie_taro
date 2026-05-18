@@ -941,31 +941,29 @@ cardElement.classList.add('open');
 
 });
 
-const message function generateReading(question, cards){
+});
 
-const card1 = tarotMeanings[cards[0].name];
-const card2 = tarotMeanings[cards[1].name];
-const card3 = tarotMeanings[cards[2].name];
+const message = generateReading(question, cards);
 
-return `
+setTimeout(()=>{
 
-✨ Твой вопрос:
-"${question}"
+const result = document.getElementById('result');
 
-${cards[0].name} показывает, что корень ситуации связан с тем, что:
-${card1.past}
+const resultText = document.getElementById('resultText');
 
-Сейчас ${cards[1].name.toLowerCase()} говорит о том, что:
-${card2.present}
+result.style.display = 'block';
 
-Но итоговая карта — ${cards[2].name} — показывает, что:
-${card3.future}
+resultText.innerText = message;
 
-Этот расклад говорит о том, что сейчас ты проходишь важный внутренний этап, где многое постепенно перестраивается глубже, чем кажется на первый взгляд. Карты показывают не просто внешние события, а внутренние изменения, которые со временем приведут тебя к совершенно новому состоянию.
+result.scrollIntoView({
+behavior:'smooth'
+});
 
-`;
+},3500);
 
 }
+
+</script>
 setTimeout(()=>{
 
 const result = document.getElementById('result');

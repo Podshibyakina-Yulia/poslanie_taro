@@ -48,12 +48,17 @@ body::before{
 content:'';
 position:fixed;
 inset:0;
-background-image:
-radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px);
-background-size:50px 50px;
-opacity:0.18;
+background:
+radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.9), transparent),
+radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.7), transparent),
+radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.8), transparent),
+radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.9), transparent),
+radial-gradient(1px 1px at 160px 30px, rgba(255,255,255,0.8), transparent);
+background-repeat:repeat;
+background-size:200px 200px;
+opacity:0.4;
 pointer-events:none;
-animation:starsMove 120s linear infinite;
+animation:starsMove 90s linear infinite;
 }
 
 @keyframes starsMove{
@@ -63,7 +68,7 @@ transform:translateY(0);
 }
 
 to{
-transform:translateY(-300px);
+transform:translateY(-400px);
 }
 
 }
@@ -391,6 +396,10 @@ font-size:17px;
 
 <div id="dayCardContainer" class="day-card-container"></div>
 
+<button class="main-btn" onclick="downloadDayCard()" style="margin-top:25px;">
+📥 Скачать карту дня
+</button>
+
 </div>
 
 <div class="limit-message" id="limitMessage">
@@ -410,6 +419,10 @@ font-size:17px;
 <h2>Твоё послание 🌙</h2>
 
 <div id="resultText"></div>
+
+<button class="main-btn" onclick="downloadReading()" style="margin-top:25px;">
+📥 Скачать расклад
+</button>
 
 <div class="contact">
 
@@ -447,23 +460,16 @@ const tarotDeck = [
 {name:'Жрица',image:'cards/zhritsa.jpg'},
 {name:'Императрица',image:'cards/imperatritsa.jpg'},
 {name:'Император',image:'cards/imperator.jpg'},
-{name:'Иерофант',image:'cards/ierofant.jpg'},
-{name:'Влюбленные',image:'cards/vlyublennye.jpg'},
-{name:'Колесница',image:'cards/kolesnitsa.jpg'},
-{name:'Сила',image:'cards/sila.jpg'},
-{name:'Отшельник',image:'cards/otshelnik.jpg'},
-{name:'Колесо Фортуны',image:'cards/koleso-fortuny.jpg'},
-{name:'Правосудие',image:'cards/pravosudie.jpg'},
-{name:'Повешенный',image:'cards/poveshennyy.jpg'},
-{name:'Смерть',image:'cards/smert.jpg'},
-{name:'Умеренность',image:'cards/umerennost.jpg'},
-{name:'Дьявол',image:'cards/dyavol.jpg'},
 {name:'Башня',image:'cards/bashnya.jpg'},
-{name:'Звезда',image:'cards/zvezda.jpg'},
 {name:'Луна',image:'cards/luna.jpg'},
 {name:'Солнце',image:'cards/solnce.jpg'},
+{name:'Звезда',image:'cards/zvezda.jpg'},
+{name:'Смерть',image:'cards/smert.jpg'},
+{name:'Влюбленные',image:'cards/vlyublennye.jpg'},
 {name:'Суд',image:'cards/sud.jpg'},
-{name:'Мир',image:'cards/mir.jpg'}
+{name:'Мир',image:'cards/mir.jpg'},
+{name:'Дьявол',image:'cards/dyavol.jpg'},
+{name:'Умеренность',image:'cards/umerennost.jpg'}
 
 ];
 
@@ -500,30 +506,12 @@ return shuffled.slice(0,3);
 
 function generateReading(question, cards){
 
-const q = question.toLowerCase();
-
-if(
-q.includes('деньг') ||
-q.includes('доход') ||
-q.includes('финанс')
-){
-
 return `
-Этот расклад показывает, что тема денег и реализации сейчас связана не только с внешними обстоятельствами, но и с твоим внутренним состоянием. ${cards[0].name} говорит о том, что внутри тебя уже давно зрели изменения и постепенно появлялось ощущение, что старая версия жизни тебе больше не подходит.
+Этот расклад показывает, что сейчас в твоей жизни начинается важный внутренний этап. ${cards[0].name} говорит о процессах и состояниях, которые уже давно постепенно подводили тебя к переменам.
 
-${cards[1].name} показывает, что пространство сейчас буквально подталкивает тебя по-новому посмотреть на себя, свои возможности и свою ценность.
+${cards[1].name} показывает, что пространство сейчас буквально заставляет тебя по-новому посмотреть на себя, своё состояние и многие жизненные ситуации.
 
-А ${cards[2].name} говорит о том, что твой финансовый рост уже постепенно начинает запускаться, но сначала тебе важно перестать жить через старые ограничения и внутренние страхи.
-`;
-
-}
-
-return `
-Этот расклад показывает, что сейчас ты проходишь очень важный внутренний этап, где многое начинает меняться глубже, чем кажется на первый взгляд. ${cards[0].name} говорит о том, что внутри тебя уже давно зрели изменения.
-
-${cards[1].name} показывает необходимость по-новому посмотреть на себя и своё внутреннее состояние.
-
-А ${cards[2].name} говорит о новом этапе, который постепенно начинает раскрываться в твоей жизни.
+А ${cards[2].name} говорит о том, что через этот период ты постепенно начнёшь выходить в совершенно новый жизненный этап, где многое будет ощущаться иначе.
 `;
 
 }
@@ -679,6 +667,44 @@ color:#f3efff;
 </div>
 
 `;
+
+}
+
+function downloadReading(){
+
+const text =
+document.getElementById('resultText').innerText;
+
+const blob =
+new Blob([text], {type:'text/plain'});
+
+const a =
+document.createElement('a');
+
+a.href = URL.createObjectURL(blob);
+
+a.download = 'rasklad.txt';
+
+a.click();
+
+}
+
+function downloadDayCard(){
+
+const text =
+document.getElementById('dayCardContainer').innerText;
+
+const blob =
+new Blob([text], {type:'text/plain'});
+
+const a =
+document.createElement('a');
+
+a.href = URL.createObjectURL(blob);
+
+a.download = 'karta-dnya.txt';
+
+a.click();
 
 }
 

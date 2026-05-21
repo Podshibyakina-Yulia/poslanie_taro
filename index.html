@@ -66,6 +66,12 @@ font-size:18px;
 color:#eee8ff;
 }
 
+.counter{
+margin-top:18px;
+font-size:17px;
+color:#d8c9ff;
+}
+
 .question-box{
 background:rgba(255,255,255,0.05);
 border:1px solid rgba(255,255,255,0.08);
@@ -214,6 +220,17 @@ color:white;
 border:1px solid rgba(255,255,255,0.1);
 }
 
+.limit-message{
+display:none;
+margin-top:35px;
+padding:28px;
+border-radius:28px;
+background:rgba(255,255,255,0.06);
+line-height:1.8;
+font-size:18px;
+text-align:center;
+}
+
 @media(max-width:700px){
 
 h1{
@@ -223,6 +240,10 @@ font-size:48px;
 .card{
 width:150px;
 height:270px;
+}
+
+.cards{
+gap:12px;
 }
 
 }
@@ -250,6 +271,8 @@ height:270px;
 И позволь картам показать тебе главное 🌙
 </div>
 
+<div class="counter" id="counter"></div>
+
 </div>
 
 <div class="question-box">
@@ -259,6 +282,16 @@ height:270px;
 <button class="main-btn" onclick="startReading()">
 🔮 Получить расклад
 </button>
+
+</div>
+
+<div class="limit-message" id="limitMessage">
+
+✨ Лимит раскладов на сегодня завершён 🌙
+
+<br><br>
+
+Возвращайся завтра за новым посланием ✨
 
 </div>
 
@@ -302,13 +335,10 @@ const tarotDeck = [
 {name:'Жрица',image:'cards/zhritsa.jpg'},
 {name:'Императрица',image:'cards/imperatritsa.jpg'},
 {name:'Император',image:'cards/imperator.jpg'},
-{name:'Иерофант',image:'cards/ierofant.jpg'},
 {name:'Влюбленные',image:'cards/vlyublennye.jpg'},
-{name:'Колесница',image:'cards/kolesnitsa.jpg'},
 {name:'Сила',image:'cards/sila.jpg'},
 {name:'Отшельник',image:'cards/otshelnik.jpg'},
 {name:'Колесо Фортуны',image:'cards/koleso-fortuny.jpg'},
-{name:'Правосудие',image:'cards/pravosudie.jpg'},
 {name:'Повешенный',image:'cards/poveshennyy.jpg'},
 {name:'Смерть',image:'cards/smert.jpg'},
 {name:'Умеренность',image:'cards/umerennost.jpg'},
@@ -386,6 +416,29 @@ future:"после этого периода ты выйдешь в соверш
 
 };
 
+function updateCounter(){
+
+const today = new Date().toLocaleDateString();
+
+let savedDate = localStorage.getItem('tarotDate');
+let count = localStorage.getItem('tarotCount');
+
+if(savedDate !== today){
+
+localStorage.setItem('tarotDate', today);
+localStorage.setItem('tarotCount', 0);
+
+count = 0;
+
+}
+
+document.getElementById('counter').innerText =
+`🌙 Осталось раскладов на сегодня: ${3 - count}`;
+
+}
+
+updateCounter();
+
 function getRandomCards(){
 
 const shuffled = [...tarotDeck].sort(() => 0.5 - Math.random());
@@ -409,6 +462,43 @@ const card3 = tarotMeanings[cards[2].name] || fallback;
 const q = question.toLowerCase();
 
 let intro = '';
+
+const moneyEndings = [
+
+'Карты показывают, что твой финансовый рост уже начинает формироваться, но пространство словно перестраивает тебя внутренне под совершенно новый уровень жизни.',
+
+'Сейчас твоя главная задача — перестать смотреть на себя через старые ограничения. Именно после этого начнут приходить совершенно новые возможности.',
+
+'Этот расклад показывает, что твой рост уже запущен, даже если внешне пока не всё выглядит так быстро, как тебе хотелось бы.',
+
+'Пространство постепенно выводит тебя в более сильный и стабильный этап, где ты начнёшь совершенно иначе ощущать деньги и свою ценность.'
+
+];
+
+const loveEndings = [
+
+'Карты показывают, что через этот этап ты начинаешь намного глубже понимать себя и свои настоящие чувства.',
+
+'Сейчас пространство словно помогает тебе увидеть отношения и эмоции совершенно по-новому.',
+
+'Этот расклад говорит о глубокой внутренней трансформации, после которой ты уже не сможешь соглашаться на то, что тебе не подходит.',
+
+'Очень многое в отношениях начнёт меняться именно тогда, когда ты перестанешь предавать свои настоящие чувства.'
+
+];
+
+const commonEndings = [
+
+'Карты показывают не только внешние события, но и внутренние изменения, которые постепенно выводят тебя в совершенно новый этап жизни.',
+
+'Сейчас пространство постепенно перестраивает многие сферы твоей жизни глубже, чем кажется на первый взгляд.',
+
+'Этот расклад показывает, что внутренние изменения уже запущены, даже если внешне всё ещё кажется неопределённым.',
+
+'Очень многое начинает меняться именно внутри тебя, и со временем это полностью изменит твою реальность.'
+
+];
+
 let ending = '';
 
 if(
@@ -420,7 +510,7 @@ q.includes('финанс')
 
 intro = 'Этот расклад показывает, что твой вопрос связан не только с внешними возможностями, но и с глубокими внутренними установками, которые влияют на твой рост и реализацию.';
 
-ending = 'Карты показывают, что твой рост уже постепенно начинается, но пространство словно перестраивает тебя внутренне под совершенно новый уровень жизни.';
+ending = moneyEndings[Math.floor(Math.random() * moneyEndings.length)];
 
 }
 
@@ -433,7 +523,7 @@ q.includes('пар')
 
 intro = 'Этот расклад показывает, что ситуация в отношениях сейчас намного глубже, чем кажется на первый взгляд.';
 
-ending = 'Карты показывают, что через этот этап ты начинаешь намного глубже понимать себя и свои настоящие чувства.';
+ending = loveEndings[Math.floor(Math.random() * loveEndings.length)];
 
 }
 
@@ -441,7 +531,7 @@ else{
 
 intro = 'Этот расклад показывает, что сейчас ты проходишь важный внутренний этап, где многое постепенно начинает перестраиваться глубже, чем кажется на первый взгляд.';
 
-ending = 'Карты показывают не только внешние события, но и внутренние изменения, которые постепенно выводят тебя в совершенно новый этап жизни.';
+ending = commonEndings[Math.floor(Math.random() * commonEndings.length)];
 
 }
 
@@ -465,6 +555,34 @@ ${ending}
 }
 
 function startReading(){
+
+const today = new Date().toLocaleDateString();
+
+let savedDate = localStorage.getItem('tarotDate');
+let count = parseInt(localStorage.getItem('tarotCount')) || 0;
+
+if(savedDate !== today){
+
+localStorage.setItem('tarotDate', today);
+localStorage.setItem('tarotCount', 0);
+
+count = 0;
+
+}
+
+if(count >= 3){
+
+document.getElementById('limitMessage').style.display = 'block';
+
+return;
+
+}
+
+count++;
+
+localStorage.setItem('tarotCount', count);
+
+updateCounter();
 
 const question = document.getElementById('question').value;
 

@@ -23,7 +23,7 @@ gtag('js', new Date());
 gtag('config', 'G-4NEL5C4HZ7');
 </script>
 
-<!-- html2canvas -->
+<!-- СКАЧИВАНИЕ КАРТЫ -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -46,6 +46,8 @@ overflow-x:hidden;
 min-height:100vh;
 position:relative;
 }
+
+/* ЗВЕЗДЫ */
 
 body::before{
 content:'';
@@ -271,15 +273,70 @@ font-size:18px;
 text-align:center;
 }
 
+.contact{
+margin-top:40px;
+text-align:center;
+}
+
+.contact-title{
+font-size:22px;
+margin-bottom:20px;
+color:#e5d9ff;
+}
+
+.contact-buttons{
+display:flex;
+flex-direction:column;
+gap:14px;
+}
+
+.contact-btn{
+padding:18px;
+border-radius:20px;
+text-decoration:none;
+font-weight:600;
+font-size:17px;
+}
+
+.telegram{
+background:linear-gradient(135deg,#9e7aff,#ddd2ff);
+color:#14001f;
+}
+
+.max{
+background:rgba(255,255,255,0.08);
+color:white;
+border:1px solid rgba(255,255,255,0.1);
+}
+
 .day-card-container{
 display:none;
 margin-top:35px;
+}
+
+@media(max-width:700px){
+
+h1{
+font-size:48px;
+}
+
+.card{
+width:150px;
+height:270px;
+}
+
+.cards{
+gap:12px;
+}
+
 }
 
 </style>
 </head>
 
 <body>
+
+<!-- МУЗЫКА -->
 
 <audio id="bgMusic" loop>
 <source src="music.mp3" type="audio/mpeg">
@@ -311,6 +368,18 @@ margin-top:35px;
 
 </div>
 
+<!-- ОСНОВНОЙ РАСКЛАД -->
+
+<div class="box">
+
+<textarea id="question" placeholder="Напиши свой вопрос..."></textarea>
+
+<button class="main-btn" onclick="startReading()">
+🔮 Получить расклад
+</button>
+
+</div>
+
 <!-- КАРТА ДНЯ -->
 
 <div class="box" style="text-align:center;">
@@ -338,9 +407,52 @@ font-size:17px;
 
 <div id="dayCardContainer" class="day-card-container"></div>
 
-<button class="main-btn" onclick="downloadDayCard()" style="margin-top:25px;">
+<button class="main-btn" onclick="downloadDayCard()">
 📥 Скачать карту дня
 </button>
+
+</div>
+
+<div class="limit-message" id="limitMessage">
+
+✨ Лимит раскладов на сегодня завершён 🌙
+
+<br><br>
+
+Возвращайся завтра за новым посланием ✨
+
+</div>
+
+<div class="cards" id="cards"></div>
+
+<div class="result" id="result">
+
+<h2>Твоё послание 🌙</h2>
+
+<div id="resultText"></div>
+
+<div class="contact">
+
+<div class="contact-title">
+✨ Хочешь личный глубокий расклад от Юлии?
+</div>
+
+<div class="contact-buttons">
+
+<a class="contact-btn telegram"
+href="https://t.me/podshibyakina_yuliya"
+target="_blank">
+✨ Написать в Telegram
+</a>
+
+<a class="contact-btn max"
+href="https://max.ru/u/f9LHodD0cOIX_eXMjjTvHh3JNH9qGgtBEpBTIIj3X0YVu6utxYSyGRzK2Zk"
+target="_blank">
+💫 Написать в MAX
+</a>
+
+</div>
+</div>
 
 </div>
 
@@ -368,6 +480,8 @@ const tarotDeck = [
 
 ];
 
+/* МУЗЫКА */
+
 let musicPlaying = false;
 
 function toggleMusic(){
@@ -378,22 +492,187 @@ document.getElementById('bgMusic');
 if(!musicPlaying){
 
 music.play();
-
 musicPlaying = true;
 
 }else{
 
 music.pause();
-
 musicPlaying = false;
 
 }
 
 }
 
-function getDayCard(){
+/* ЛИМИТ */
+
+function updateCounter(){
 
 const today = new Date().toLocaleDateString();
+
+let savedDate = localStorage.getItem('tarotDate');
+let count = localStorage.getItem('tarotCount');
+
+if(savedDate !== today){
+
+localStorage.setItem('tarotDate', today);
+localStorage.setItem('tarotCount', 0);
+
+count = 0;
+
+}
+
+document.getElementById('counter').innerText =
+`🌙 Осталось раскладов на сегодня: ${3 - count}`;
+
+}
+
+updateCounter();
+
+/* СЛУЧАЙНЫЕ КАРТЫ */
+
+function getRandomCards(){
+
+const shuffled =
+[...tarotDeck].sort(() => 0.5 - Math.random());
+
+return shuffled.slice(0,3);
+
+}
+
+/* РАСКЛАД */
+
+function generateReading(question, cards){
+
+return `
+
+Этот расклад показывает, что сейчас ты проходишь важный внутренний этап, где многое постепенно начинает перестраиваться глубже, чем кажется на первый взгляд.
+
+${cards[0].name} показывает события и состояния, которые уже давно влияли на твою внутреннюю энергию и эмоциональное состояние.
+
+${cards[1].name} говорит о том, что пространство сейчас буквально подталкивает тебя посмотреть на ситуацию глубже и честнее.
+
+А ${cards[2].name} показывает, что через внутренние изменения постепенно начнёт меняться и внешняя реальность вокруг тебя.
+
+`;
+
+}
+
+/* ОСНОВНОЙ РАСКЛАД */
+
+function startReading(){
+
+const question =
+document.getElementById('question').value;
+
+if(question.trim() === ''){
+
+alert('Напиши свой вопрос ✨');
+return;
+
+}
+
+const today = new Date().toLocaleDateString();
+
+let savedDate =
+localStorage.getItem('tarotDate');
+
+let count =
+parseInt(localStorage.getItem('tarotCount')) || 0;
+
+if(savedDate !== today){
+
+localStorage.setItem('tarotDate', today);
+localStorage.setItem('tarotCount', 0);
+
+count = 0;
+
+}
+
+if(count >= 3){
+
+document.getElementById('limitMessage').style.display = 'block';
+
+return;
+
+}
+
+count++;
+
+localStorage.setItem('tarotCount', count);
+
+updateCounter();
+
+const cards = getRandomCards();
+
+const cardsContainer =
+document.getElementById('cards');
+
+cardsContainer.innerHTML = '';
+
+cardsContainer.style.display = 'flex';
+
+cards.forEach((card,index)=>{
+
+const cardElement =
+document.createElement('div');
+
+cardElement.className = 'card';
+
+cardElement.innerHTML = `
+
+<div class="card-inner">
+
+<div class="card-front">
+✦
+</div>
+
+<div class="card-back">
+<img src="${card.image}">
+</div>
+
+</div>
+
+`;
+
+cardsContainer.appendChild(cardElement);
+
+setTimeout(()=>{
+
+cardElement.classList.add('open');
+
+},700 + (index * 700));
+
+});
+
+const message =
+generateReading(question, cards);
+
+setTimeout(()=>{
+
+const result =
+document.getElementById('result');
+
+const resultText =
+document.getElementById('resultText');
+
+result.style.display = 'block';
+
+resultText.innerText = message;
+
+result.scrollIntoView({
+behavior:'smooth'
+});
+
+},3500);
+
+}
+
+/* КАРТА ДНЯ */
+
+function getDayCard(){
+
+const today =
+new Date().toLocaleDateString();
 
 let savedDate =
 localStorage.getItem('dayCardDate');
@@ -432,9 +711,7 @@ const messages = [
 
 'Сегодня пространство словно пытается показать тебе направление, куда сейчас особенно важно двигаться.',
 
-'Эта карта говорит о состоянии, которое сейчас особенно сильно влияет на твою жизнь.',
-
-'Сегодня особенно важно обращать внимание на свои эмоции, внутренние ощущения и знаки пространства.'
+'Эта карта говорит о состоянии, которое сейчас особенно сильно влияет на твою жизнь.'
 
 ];
 
@@ -460,21 +737,10 @@ position:relative;
 overflow:hidden;
 ">
 
-<div style="
-position:absolute;
-inset:0;
-background:
-radial-gradient(rgba(255,255,255,0.5) 1px, transparent 1px);
-background-size:35px 35px;
-opacity:0.08;
-"></div>
-
 <h2 style="
 font-family:'Cormorant Garamond',serif;
 font-size:54px;
 margin-bottom:35px;
-position:relative;
-z-index:2;
 ">
 ✨ Карта дня
 </h2>
@@ -483,8 +749,6 @@ z-index:2;
 display:flex;
 justify-content:center;
 margin-bottom:35px;
-position:relative;
-z-index:2;
 ">
 
 <img src="${card.image}" style="
@@ -500,8 +764,6 @@ font-size:34px;
 margin-bottom:24px;
 font-weight:600;
 color:#f3eaff;
-position:relative;
-z-index:2;
 ">
 ${card.name}
 </div>
@@ -512,8 +774,6 @@ font-size:21px;
 color:#e8dcff;
 max-width:650px;
 margin:auto;
-position:relative;
-z-index:2;
 ">
 
 ${randomMessage}
@@ -524,8 +784,6 @@ ${randomMessage}
 margin-top:45px;
 font-size:18px;
 opacity:0.8;
-position:relative;
-z-index:2;
 ">
 🌙 Послание Таро — Юлия Подшибякина
 </div>
@@ -539,6 +797,8 @@ behavior:'smooth'
 });
 
 }
+
+/* СКАЧАТЬ КАРТУ */
 
 async function downloadDayCard(){
 

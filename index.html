@@ -23,7 +23,7 @@ gtag('js', new Date());
 gtag('config', 'G-4NEL5C4HZ7');
 </script>
 
-<!-- СКАЧИВАНИЕ КАРТЫ -->
+<!-- СКАЧИВАНИЕ -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -57,11 +57,10 @@ background:
 radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.9), transparent),
 radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.7), transparent),
 radial-gradient(1px 1px at 90px 40px, rgba(255,255,255,0.8), transparent),
-radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.9), transparent),
-radial-gradient(1px 1px at 160px 30px, rgba(255,255,255,0.8), transparent);
+radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.9), transparent);
 background-repeat:repeat;
 background-size:200px 200px;
-opacity:0.4;
+opacity:0.35;
 pointer-events:none;
 animation:starsMove 90s linear infinite;
 }
@@ -127,7 +126,7 @@ color:#d8c9ff;
 }
 
 .music-btn{
-margin-top:20px;
+margin-top:18px;
 padding:14px 22px;
 border:none;
 border-radius:18px;
@@ -135,11 +134,6 @@ background:rgba(255,255,255,0.08);
 color:white;
 cursor:pointer;
 font-size:15px;
-transition:0.3s;
-}
-
-.music-btn:hover{
-transform:scale(1.05);
 }
 
 .box{
@@ -253,6 +247,7 @@ border-radius:32px;
 line-height:2;
 font-size:18px;
 color:#f3f0ff;
+white-space:pre-line;
 }
 
 .result h2{
@@ -260,17 +255,6 @@ font-family:'Cormorant Garamond',serif;
 font-size:44px;
 text-align:center;
 margin-bottom:24px;
-}
-
-.limit-message{
-display:none;
-margin-top:30px;
-background:rgba(255,255,255,0.06);
-padding:28px;
-border-radius:28px;
-line-height:1.8;
-font-size:18px;
-text-align:center;
 }
 
 .contact{
@@ -309,6 +293,17 @@ color:white;
 border:1px solid rgba(255,255,255,0.1);
 }
 
+.limit-message{
+display:none;
+margin-top:30px;
+background:rgba(255,255,255,0.06);
+padding:28px;
+border-radius:28px;
+line-height:1.8;
+font-size:18px;
+text-align:center;
+}
+
 .day-card-container{
 display:none;
 margin-top:35px;
@@ -335,8 +330,6 @@ gap:12px;
 </head>
 
 <body>
-
-<!-- МУЗЫКА -->
 
 <audio id="bgMusic" loop>
 <source src="music.mp3" type="audio/mpeg">
@@ -460,25 +453,49 @@ target="_blank">
 
 <script>
 
+/* КОЛОДА */
+
 const tarotDeck = [
 
-{name:'Шут',image:'cards/shut.jpg'},
-{name:'Маг',image:'cards/mag.jpg'},
-{name:'Жрица',image:'cards/zhritsa.jpg'},
-{name:'Императрица',image:'cards/imperatritsa.jpg'},
-{name:'Император',image:'cards/imperator.jpg'},
-{name:'Башня',image:'cards/bashnya.jpg'},
 {name:'Луна',image:'cards/luna.jpg'},
-{name:'Солнце',image:'cards/solnce.jpg'},
+{name:'Башня',image:'cards/bashnya.jpg'},
+{name:'Император',image:'cards/imperator.jpg'},
+{name:'Шут',image:'cards/shut.jpg'},
 {name:'Звезда',image:'cards/zvezda.jpg'},
 {name:'Смерть',image:'cards/smert.jpg'},
+{name:'Дьявол',image:'cards/dyavol.jpg'},
 {name:'Влюбленные',image:'cards/vlyublennye.jpg'},
 {name:'Суд',image:'cards/sud.jpg'},
 {name:'Мир',image:'cards/mir.jpg'},
-{name:'Дьявол',image:'cards/dyavol.jpg'},
+{name:'Жрица',image:'cards/zhritsa.jpg'},
+{name:'Императрица',image:'cards/imperatritsa.jpg'},
+{name:'Маг',image:'cards/mag.jpg'},
+{name:'Солнце',image:'cards/solnce.jpg'},
 {name:'Умеренность',image:'cards/umerennost.jpg'}
 
 ];
+
+/* ЭНЕРГИИ */
+
+const energies = {
+
+"Луна":"внутренние страхи, тревожность и эмоциональная перегрузка",
+"Башня":"разрушение старых состояний и глубокая перестройка жизни",
+"Император":"контроль, попытка удержать стабильность и внутреннее напряжение",
+"Шут":"новый этап, внутреннее освобождение и желание перемен",
+"Звезда":"надежда, восстановление и постепенное эмоциональное исцеление",
+"Смерть":"завершение старого этапа и внутренняя трансформация",
+"Дьявол":"страхи, привязки и состояния, которые забирают энергию",
+"Влюбленные":"внутренний выбор, эмоции и тема отношений",
+"Суд":"глубокое внутреннее пробуждение и переоценка жизни",
+"Мир":"выход на совершенно новый жизненный этап",
+"Жрица":"интуиция, внутренние ощущения и скрытые процессы",
+"Императрица":"самоценность, женская энергия и внутреннее наполнение",
+"Маг":"сила влияния на свою жизнь и внутренний потенциал",
+"Солнце":"ясность, энергия и выход в более светлый период",
+"Умеренность":"восстановление, баланс и постепенное выравнивание состояния"
+
+};
 
 /* МУЗЫКА */
 
@@ -486,8 +503,7 @@ let musicPlaying = false;
 
 function toggleMusic(){
 
-const music =
-document.getElementById('bgMusic');
+const music = document.getElementById('bgMusic');
 
 if(!musicPlaying){
 
@@ -539,59 +555,29 @@ return shuffled.slice(0,3);
 
 }
 
-/* РАСКЛАД */
+/* ГЕНЕРАЦИЯ */
 
 function generateReading(question, cards){
 
-const intros = [
+const q = question.toLowerCase();
 
-'Этот расклад показывает, что сейчас ты проходишь очень важный внутренний этап, где многое начинает меняться глубже, чем кажется на первый взгляд.',
+const intro = [
 
-'Сейчас пространство словно постепенно подводит тебя к внутренним изменениям, которые уже давно назревали внутри.',
+"Сейчас пространство показывает очень глубокий внутренний процесс, который уже давно постепенно формировался внутри тебя.",
 
-'Этот расклад показывает, что происходящее сейчас связано не только с внешними событиями, но и с глубокими внутренними процессами.',
+"Карты показывают, что происходящее сейчас связано не только с внешними событиями, но и с сильными внутренними изменениями.",
 
-'Карты показывают, что нынешняя ситуация намного глубже, чем может казаться внешне.'
-
-];
-
-const middle1 = [
-
-` ${cards[0].name} говорит о состояниях и переживаниях, которые уже давно постепенно накапливались внутри тебя.`,
-
-` Именно ${cards[0].name} показывает внутренний процесс, который долгое время оставался незамеченным.`,
-
-` ${cards[0].name} здесь связана с тем, что пространство уже давно пыталось обратить твоё внимание на определённые внутренние ощущения.`
+"Этот расклад говорит о периоде внутренней перестройки, где многое начинает меняться глубже, чем кажется на первый взгляд."
 
 ];
 
-const middle2 = [
+const ending = [
 
-` Сейчас ${cards[1].name} словно подталкивает тебя посмотреть на происходящее намного глубже и честнее.`,
+"Именно через этот внутренний процесс постепенно начнёт меняться и внешняя реальность вокруг тебя.",
 
-` ${cards[1].name} показывает, что именно сейчас начинается самый важный этап внутреннего осознания.`,
+"Сейчас особенно важно не сопротивляться внутренним изменениям, потому что именно через них пространство выводит тебя в новый жизненный этап.",
 
-` Через энергию карты ${cards[1].name} пространство буквально перестраивает твоё восприятие себя и ситуации.`
-
-];
-
-const endings = [
-
-` А ${cards[2].name} говорит о том, что через эти внутренние изменения постепенно начнёт меняться и твоя внешняя реальность.`,
-
-` Итоговая энергия ${cards[2].name} показывает, что этот период постепенно выводит тебя в совершенно новый жизненный этап.`,
-
-` Именно ${cards[2].name} показывает, что после этого внутреннего процесса многое в твоей жизни уже не сможет оставаться прежним.`
-
-];
-
-const finals = [
-
-'Сейчас особенно важно не пытаться торопить события, а позволить пространству постепенно выстраивать для тебя новый этап жизни.',
-
-'Карты показывают, что сейчас внутри тебя запускаются процессы, которые со временем очень сильно изменят твоё состояние и восприятие жизни.',
-
-'Очень многое сейчас происходит именно на внутреннем уровне, даже если внешне ты пока видишь только часть картины.'
+"Несмотря на эмоциональную сложность происходящего, этот период постепенно приведёт тебя к совершенно новому состоянию."
 
 ];
 
@@ -603,20 +589,19 @@ return arr[Math.floor(Math.random() * arr.length)];
 
 return `
 
-${random(intros)}
+${random(intro)}
 
-${random(middle1)}
+Сейчас в твоей жизни очень сильно переплетаются энергии таких состояний, как ${energies[cards[0].name]}, ${energies[cards[1].name]} и ${energies[cards[2].name]}. Именно поэтому происходящее может ощущаться намного глубже и эмоциональнее, чем кажется на первый взгляд.
 
-${random(middle2)}
+Очень многое сейчас связано с внутренними переживаниями, накопленными состояниями и теми процессами, которые долгое время могли оставаться внутри. Пространство словно постепенно подталкивает тебя к внутренней перестройке и новому восприятию себя и своей жизни.
 
-${random(endings)}
-
-${random(finals)}
+${random(ending)}
 
 `;
 
 }
-/* ОСНОВНОЙ РАСКЛАД */
+
+/* РАСКЛАД */
 
 function startReading(){
 
@@ -762,21 +747,6 @@ JSON.stringify(card)
 
 }
 
-const messages = [
-
-'Сегодня пространство показывает, что тебе особенно важно прислушиваться к своему внутреннему состоянию.',
-
-'Эта карта связана с важными внутренними изменениями, которые уже постепенно начинают происходить.',
-
-'Сегодня пространство словно пытается показать тебе направление, куда сейчас особенно важно двигаться.',
-
-'Эта карта говорит о состоянии, которое сейчас особенно сильно влияет на твою жизнь.'
-
-];
-
-const randomMessage =
-messages[Math.floor(Math.random() * messages.length)];
-
 const container =
 document.getElementById('dayCardContainer');
 
@@ -792,8 +762,6 @@ padding:50px 40px;
 border-radius:40px;
 text-align:center;
 box-shadow:0 0 50px rgba(165,120,255,0.35);
-position:relative;
-overflow:hidden;
 ">
 
 <h2 style="
@@ -835,29 +803,18 @@ max-width:650px;
 margin:auto;
 ">
 
-${randomMessage}
+Сегодня пространство показывает энергию, связанную с темой:
+${energies[card.name]}.
 
-</div>
-
-<div style="
-margin-top:45px;
-font-size:18px;
-opacity:0.8;
-">
-🌙 Послание Таро — Юлия Подшибякина
 </div>
 
 </div>
 
 `;
 
-container.scrollIntoView({
-behavior:'smooth'
-});
-
 }
 
-/* СКАЧАТЬ КАРТУ */
+/* СКАЧАТЬ */
 
 async function downloadDayCard(){
 

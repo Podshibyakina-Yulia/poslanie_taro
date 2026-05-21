@@ -78,6 +78,7 @@ border:1px solid rgba(255,255,255,0.08);
 border-radius:32px;
 padding:30px;
 backdrop-filter:blur(12px);
+margin-bottom:30px;
 }
 
 textarea{
@@ -231,6 +232,11 @@ font-size:18px;
 text-align:center;
 }
 
+.day-card-container{
+display:none;
+margin-top:30px;
+}
+
 @media(max-width:700px){
 
 h1{
@@ -285,6 +291,35 @@ gap:12px;
 
 </div>
 
+<!-- КАРТА ДНЯ -->
+
+<div class="question-box" style="text-align:center;">
+
+<h2 style="
+font-family:'Cormorant Garamond',serif;
+font-size:42px;
+margin-bottom:16px;
+">
+✨ Карта дня
+</h2>
+
+<div style="
+color:#e9ddff;
+line-height:1.8;
+margin-bottom:24px;
+font-size:17px;
+">
+Получай своё главное послание на сегодняшний день 🌙
+</div>
+
+<button class="main-btn" onclick="getDayCard()">
+🔮 Получить карту дня
+</button>
+
+<div id="dayCardContainer" class="day-card-container"></div>
+
+</div>
+
 <div class="limit-message" id="limitMessage">
 
 ✨ Лимит раскладов на сегодня завершён 🌙
@@ -324,6 +359,7 @@ target="_blank">
 </div>
 </div>
 </div>
+
 </div>
 
 <script>
@@ -422,15 +458,16 @@ const moneyTexts = [
 
 `Этот расклад показывает, что вопрос денег сейчас связан не только с внешними обстоятельствами, но и с твоим внутренним состоянием. ${cards[0].name} говорит о том, что корень ситуации формировался уже давно и многое постепенно подводило тебя к переоценке своей ценности и возможностей.
 
-${cards[1].name} показывает, что сейчас пространство словно заставляет тебя посмотреть на себя и свою реализацию совершенно по-другому. Очень многое начинает меняться именно внутри тебя.
+${cards[1].name} показывает, что сейчас пространство словно заставляет тебя посмотреть на себя и свою реализацию совершенно по-другому.
 
-${cards[2].name} в итоге говорит о том, что твой финансовый рост уже начинает постепенно запускаться, но сначала тебе важно выйти из старых ограничений и внутренних страхов.`,
+${cards[2].name} говорит о том, что твой финансовый рост уже начинает постепенно запускаться, но сначала тебе важно выйти из старых ограничений и внутренних страхов.`,
 
 `Карты показывают, что сейчас ты находишься в очень важной точке внутреннего перехода. ${cards[0].name} говорит о накопленном опыте и внутренних состояниях, которые долго влияли на твоё отношение к деньгам и стабильности.
 
 ${cards[1].name} показывает, что пространство постепенно выводит тебя на новый уровень восприятия себя и своей ценности.
 
 А ${cards[2].name} говорит о том, что в ближайшем будущем многое может начать меняться намного быстрее, чем тебе кажется сейчас.`
+
 ];
 
 const loveTexts = [
@@ -439,13 +476,8 @@ const loveTexts = [
 
 ${cards[1].name} показывает, что сейчас пространство словно заставляет тебя посмотреть на отношения более честно и глубоко.
 
-${cards[2].name} говорит о том, что именно через внутренние изменения начнёт меняться и твоя личная жизнь.`,
+${cards[2].name} говорит о том, что именно через внутренние изменения начнёт меняться и твоя личная жизнь.`
 
-`Карты показывают, что сейчас внутри тебя происходит серьёзная эмоциональная перестройка. ${cards[0].name} говорит о прошлом опыте и чувствах, которые до сих пор продолжают влиять на твоё состояние.
-
-${cards[1].name} показывает, что сейчас очень важно услышать свои настоящие желания и перестать игнорировать собственные чувства.
-
-${cards[2].name} говорит о том, что после этого периода ты уже не сможешь соглашаться на то, что тебе эмоционально не подходит.`
 ];
 
 const healthTexts = [
@@ -454,13 +486,8 @@ const healthTexts = [
 
 ${cards[1].name} показывает, что сейчас пространство буквально заставляет тебя замедлиться и начать слышать себя глубже.
 
-${cards[2].name} говорит о том, что через внутренние изменения и восстановление эмоционального состояния начнёт постепенно меняться и физическое самочувствие.`,
+${cards[2].name} говорит о том, что через внутренние изменения и восстановление эмоционального состояния начнёт постепенно меняться и физическое самочувствие.`
 
-`Карты показывают, что сейчас организм может очень сильно реагировать на внутренние переживания, стресс или накопленную усталость. ${cards[0].name} показывает глубинную эмоциональную причину происходящего.
-
-${cards[1].name} говорит о необходимости восстановления внутреннего ресурса и более бережного отношения к себе.
-
-А ${cards[2].name} показывает, что тело сейчас не пытается наказать тебя — оно пытается показать, что внутри накопилось слишком много напряжения.`
 ];
 
 const commonTexts = [
@@ -469,13 +496,8 @@ const commonTexts = [
 
 ${cards[1].name} показывает, что пространство сейчас буквально разворачивает тебя в сторону нового восприятия жизни и самого себя.
 
-${cards[2].name} говорит о том, что после этого периода ты постепенно начнёшь ощущать себя совершенно иначе.`,
+${cards[2].name} говорит о том, что после этого периода ты постепенно начнёшь ощущать себя совершенно иначе.`
 
-`Карты показывают, что сейчас в твоей жизни начинается очень важный внутренний переход. ${cards[0].name} говорит о накопленном эмоциональном опыте и состояниях прошлого.
-
-${cards[1].name} показывает, что сейчас пространство активно перестраивает многие сферы твоей жизни.
-
-А ${cards[2].name} говорит о том, что эти изменения постепенно выведут тебя в совершенно новый этап жизни и восприятия себя.`
 ];
 
 let selectedArray = commonTexts;
@@ -486,9 +508,7 @@ q.includes('доход') ||
 q.includes('работ') ||
 q.includes('финанс')
 ){
-
 selectedArray = moneyTexts;
-
 }
 
 else if(
@@ -497,9 +517,7 @@ q.includes('люб') ||
 q.includes('муж') ||
 q.includes('пар')
 ){
-
 selectedArray = loveTexts;
-
 }
 
 else if(
@@ -508,9 +526,7 @@ q.includes('бол') ||
 q.includes('аллерг') ||
 q.includes('тело')
 ){
-
 selectedArray = healthTexts;
-
 }
 
 return selectedArray[Math.floor(Math.random() * selectedArray.length)];
@@ -522,11 +538,8 @@ function startReading(){
 const question = document.getElementById('question').value;
 
 if(question.trim() === ''){
-
 alert('Напиши свой вопрос ✨');
-
 return;
-
 }
 
 const today = new Date().toLocaleDateString();
@@ -590,9 +603,7 @@ cardElement.innerHTML = `
 cardsContainer.appendChild(cardElement);
 
 setTimeout(()=>{
-
 cardElement.classList.add('open');
-
 },700 + (index * 700));
 
 });
@@ -614,6 +625,101 @@ behavior:'smooth'
 });
 
 },3500);
+
+}
+
+function getDayCard(){
+
+const today = new Date().toLocaleDateString();
+
+let savedDate = localStorage.getItem('dayCardDate');
+let savedCard = localStorage.getItem('dayCard');
+
+let card;
+
+if(savedDate === today && savedCard){
+
+card = JSON.parse(savedCard);
+
+}else{
+
+card = tarotDeck[Math.floor(Math.random() * tarotDeck.length)];
+
+localStorage.setItem('dayCardDate', today);
+localStorage.setItem('dayCard', JSON.stringify(card));
+
+}
+
+const messages = [
+
+`Сегодня пространство показывает, что тебе важно немного замедлиться и внимательнее прислушаться к своему внутреннему состоянию.`,
+
+`Эта карта говорит о важном внутреннем процессе, который уже начинает постепенно менять твоё состояние и восприятие жизни.`,
+
+`Сегодня пространство словно пытается показать тебе направление, в котором сейчас особенно важно двигаться внутренне.`,
+
+`Эта карта связана с внутренними изменениями, которые постепенно начинают выводить тебя в совершенно новый жизненный этап.`
+
+];
+
+const randomMessage =
+messages[Math.floor(Math.random() * messages.length)];
+
+const container =
+document.getElementById('dayCardContainer');
+
+container.style.display = 'block';
+
+container.innerHTML = `
+
+<div style="
+display:flex;
+justify-content:center;
+margin-bottom:30px;
+">
+
+<div class="card open">
+
+<div class="card-inner">
+
+<div class="card-front">
+✦
+</div>
+
+<div class="card-back">
+
+<img src="${card.image}" alt="${card.name}">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div style="
+background:rgba(255,255,255,0.06);
+padding:28px;
+border-radius:28px;
+line-height:2;
+font-size:18px;
+color:#f3efff;
+">
+
+✨ Сегодняшняя карта — <b>${card.name}</b>
+
+<br><br>
+
+${randomMessage}
+
+</div>
+
+`;
+
+container.scrollIntoView({
+behavior:'smooth'
+});
 
 }
 

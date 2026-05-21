@@ -1,7 +1,14 @@
 <!DOCTYPE html>
 <html lang="ru">
-<!-- Google Analytics -->
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Послание Таро — Юлия Подшибякина</title>
+
+<!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-4NEL5C4HZ7"></script>
 
 <script>
@@ -15,11 +22,6 @@ gtag('js', new Date());
 
 gtag('config', 'G-4NEL5C4HZ7');
 </script>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Послание Таро — Юлия Подшибякина</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -46,10 +48,24 @@ body::before{
 content:'';
 position:fixed;
 inset:0;
-background-image:radial-gradient(rgba(255,255,255,0.12) 1px, transparent 1px);
-background-size:40px 40px;
-opacity:0.12;
+background-image:
+radial-gradient(rgba(255,255,255,0.9) 1px, transparent 1px);
+background-size:50px 50px;
+opacity:0.18;
 pointer-events:none;
+animation:starsMove 120s linear infinite;
+}
+
+@keyframes starsMove{
+
+from{
+transform:translateY(0);
+}
+
+to{
+transform:translateY(-300px);
+}
+
 }
 
 .container{
@@ -98,6 +114,22 @@ color:#eee8ff;
 margin-top:18px;
 font-size:17px;
 color:#d8c9ff;
+}
+
+.music-btn{
+margin-top:20px;
+padding:14px 22px;
+border:none;
+border-radius:18px;
+background:rgba(255,255,255,0.08);
+color:white;
+cursor:pointer;
+font-size:15px;
+transition:0.3s;
+}
+
+.music-btn:hover{
+transform:scale(1.05);
 }
 
 .box{
@@ -294,6 +326,10 @@ gap:12px;
 
 <body>
 
+<audio id="bgMusic" loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <div class="container">
 
 <div class="header">
@@ -314,9 +350,11 @@ gap:12px;
 
 <div class="counter" id="counter"></div>
 
-</div>
+<button class="music-btn" onclick="toggleMusic()">
+🎵 Музыка
+</button>
 
-<!-- ОСНОВНОЙ РАСКЛАД -->
+</div>
 
 <div class="box">
 
@@ -327,8 +365,6 @@ gap:12px;
 </button>
 
 </div>
-
-<!-- КАРТА ДНЯ -->
 
 <div class="box" style="text-align:center;">
 
@@ -427,35 +463,7 @@ const tarotDeck = [
 {name:'Луна',image:'cards/luna.jpg'},
 {name:'Солнце',image:'cards/solnce.jpg'},
 {name:'Суд',image:'cards/sud.jpg'},
-{name:'Мир',image:'cards/mir.jpg'},
-
-{name:'Туз Жезлов',image:'cards/tuz-zhezlov.jpg'},
-{name:'Двойка Жезлов',image:'cards/dvoyka-zhezlov.jpg'},
-{name:'Тройка Жезлов',image:'cards/troyka-zhezlov.jpg'},
-{name:'Десятка Жезлов',image:'cards/desyatka-zhezlov.jpg'},
-{name:'Король Жезлов',image:'cards/korol-zhezlov.jpg'},
-{name:'Королева Жезлов',image:'cards/koroleva-zhezlov.jpg'},
-
-{name:'Туз Кубков',image:'cards/tuz-kubkov.jpg'},
-{name:'Двойка Кубков',image:'cards/dvoyka-kubkov.jpg'},
-{name:'Тройка Кубков',image:'cards/troyka-kubkov.jpg'},
-{name:'Десятка Кубков',image:'cards/desyatka-kubkov.jpg'},
-{name:'Король Кубков',image:'cards/korol-kubkov.jpg'},
-{name:'Королева Кубков',image:'cards/koroleva-kubkov.jpg'},
-
-{name:'Туз Мечей',image:'cards/tuz-mechey.jpg'},
-{name:'Тройка Мечей',image:'cards/troyka-mechey.jpg'},
-{name:'Пятерка Мечей',image:'cards/pyaterka-mechey.jpg'},
-{name:'Десятка Мечей',image:'cards/desyatka-mechey.jpg'},
-{name:'Король Мечей',image:'cards/korol-mechey.jpg'},
-{name:'Королева Мечей',image:'cards/koroleva-mechey.jpg'},
-
-{name:'Туз Пентаклей',image:'cards/tuz-pentakley.jpg'},
-{name:'Тройка Пентаклей',image:'cards/troyka-pentakley.jpg'},
-{name:'Пятерка Пентаклей',image:'cards/pyaterka-pentakley.jpg'},
-{name:'Десятка Пентаклей',image:'cards/desyatka-pentakley.jpg'},
-{name:'Король Пентаклей',image:'cards/korol-pentakley.jpg'},
-{name:'Королева Пентаклей',image:'cards/koroleva-pentakley.jpg'}
+{name:'Мир',image:'cards/mir.jpg'}
 
 ];
 
@@ -494,82 +502,29 @@ function generateReading(question, cards){
 
 const q = question.toLowerCase();
 
-const moneyTexts = [
-
-`Этот расклад показывает, что тема денег и реализации сейчас связана не только с внешними обстоятельствами, но и с твоим внутренним состоянием. ${cards[0].name} говорит о том, что внутри тебя уже давно зрели изменения и постепенно появлялось ощущение, что старая версия жизни тебе больше не подходит.
-
-${cards[1].name} показывает, что пространство сейчас буквально подталкивает тебя по-новому посмотреть на себя, свои возможности и свою ценность.
-
-А ${cards[2].name} здесь говорит о том, что твой финансовый рост уже постепенно начинает запускаться, но сначала тебе важно перестать жить через старые ограничения и внутренние страхи.`,
-
-`Карты показывают, что сейчас ты находишься в очень важной точке внутреннего перехода. ${cards[0].name} говорит о накопленном опыте и состояниях, которые долго влияли на твоё отношение к деньгам и собственной реализации.
-
-${cards[1].name} показывает, что пространство постепенно выводит тебя на новый уровень восприятия себя и своей ценности.
-
-А ${cards[2].name} говорит о том, что в ближайшем будущем могут начать открываться совершенно новые возможности.`
-
-];
-
-const loveTexts = [
-
-`Этот расклад показывает, что ситуация в отношениях сейчас намного глубже, чем кажется на первый взгляд. ${cards[0].name} говорит о старых эмоциональных переживаниях и внутренних состояниях, которые до сих пор продолжают влиять на твоё восприятие любви и близости.
-
-${cards[1].name} показывает, что пространство сейчас буквально заставляет тебя посмотреть на отношения более честно и глубоко.
-
-А ${cards[2].name} говорит о том, что именно через внутренние изменения начнёт постепенно меняться и твоя личная жизнь.`
-
-];
-
-const healthTexts = [
-
-`Этот расклад показывает, что твоё состояние сейчас может быть намного сильнее связано с внутренним напряжением и эмоциональной перегрузкой, чем кажется на первый взгляд. ${cards[0].name} говорит о том, что тело уже давно пытается обратить твоё внимание на внутренний дисбаланс.
-
-${cards[1].name} показывает, что пространство буквально заставляет тебя замедлиться и начать слышать себя глубже.
-
-А ${cards[2].name} говорит о том, что через внутренние изменения и более бережное отношение к себе начнёт постепенно меняться и физическое самочувствие.`
-
-];
-
-const commonTexts = [
-
-`Этот расклад показывает, что сейчас ты проходишь очень важный внутренний этап, где многое начинает меняться глубже, чем кажется на первый взгляд. ${cards[0].name} говорит о том, что внутри тебя уже давно зрели изменения и постепенно появлялось ощущение, что старая версия жизни тебе больше не подходит.
-
-${cards[1].name} показывает необходимость по-новому посмотреть на себя, своё состояние и внутреннюю устойчивость.
-
-А ${cards[2].name} здесь говорит о важном внутреннем выборе и новом этапе. После этого периода ты постепенно начнёшь намного лучше понимать себя и свои настоящие желания.`
-
-];
-
-let selectedArray = commonTexts;
-
 if(
 q.includes('деньг') ||
 q.includes('доход') ||
-q.includes('работ') ||
 q.includes('финанс')
 ){
-selectedArray = moneyTexts;
+
+return `
+Этот расклад показывает, что тема денег и реализации сейчас связана не только с внешними обстоятельствами, но и с твоим внутренним состоянием. ${cards[0].name} говорит о том, что внутри тебя уже давно зрели изменения и постепенно появлялось ощущение, что старая версия жизни тебе больше не подходит.
+
+${cards[1].name} показывает, что пространство сейчас буквально подталкивает тебя по-новому посмотреть на себя, свои возможности и свою ценность.
+
+А ${cards[2].name} говорит о том, что твой финансовый рост уже постепенно начинает запускаться, но сначала тебе важно перестать жить через старые ограничения и внутренние страхи.
+`;
+
 }
 
-else if(
-q.includes('отношен') ||
-q.includes('люб') ||
-q.includes('муж') ||
-q.includes('пар')
-){
-selectedArray = loveTexts;
-}
+return `
+Этот расклад показывает, что сейчас ты проходишь очень важный внутренний этап, где многое начинает меняться глубже, чем кажется на первый взгляд. ${cards[0].name} говорит о том, что внутри тебя уже давно зрели изменения.
 
-else if(
-q.includes('здоров') ||
-q.includes('бол') ||
-q.includes('аллерг') ||
-q.includes('тело')
-){
-selectedArray = healthTexts;
-}
+${cards[1].name} показывает необходимость по-новому посмотреть на себя и своё внутреннее состояние.
 
-return selectedArray[Math.floor(Math.random() * selectedArray.length)];
+А ${cards[2].name} говорит о новом этапе, который постепенно начинает раскрываться в твоей жизни.
+`;
 
 }
 
@@ -670,40 +625,8 @@ behavior:'smooth'
 
 function getDayCard(){
 
-const today = new Date().toLocaleDateString();
-
-let savedDate = localStorage.getItem('dayCardDate');
-let savedCard = localStorage.getItem('dayCard');
-
-let card;
-
-if(savedDate === today && savedCard){
-
-card = JSON.parse(savedCard);
-
-}else{
-
-card = tarotDeck[Math.floor(Math.random() * tarotDeck.length)];
-
-localStorage.setItem('dayCardDate', today);
-localStorage.setItem('dayCard', JSON.stringify(card));
-
-}
-
-const messages = [
-
-`Сегодня пространство показывает, что тебе особенно важно прислушиваться к своему внутреннему состоянию и не игнорировать сигналы своей души.`,
-
-`Эта карта говорит о внутреннем процессе, который уже начинает постепенно менять твоё состояние и восприятие жизни.`,
-
-`Сегодня пространство словно пытается показать тебе направление, в котором сейчас особенно важно двигаться.`,
-
-`Эта карта связана с внутренними изменениями, которые постепенно выводят тебя в совершенно новый жизненный этап.`
-
-];
-
-const randomMessage =
-messages[Math.floor(Math.random() * messages.length)];
+const card =
+tarotDeck[Math.floor(Math.random() * tarotDeck.length)];
 
 const container =
 document.getElementById('dayCardContainer');
@@ -751,15 +674,34 @@ color:#f3efff;
 
 <br><br>
 
-${randomMessage}
+Сегодня пространство показывает, что тебе особенно важно прислушиваться к своему внутреннему состоянию и не игнорировать сигналы своей души.
 
 </div>
 
 `;
 
-container.scrollIntoView({
-behavior:'smooth'
-});
+}
+
+let musicPlaying = false;
+
+function toggleMusic(){
+
+const music =
+document.getElementById('bgMusic');
+
+if(!musicPlaying){
+
+music.play();
+
+musicPlaying = true;
+
+}else{
+
+music.pause();
+
+musicPlaying = false;
+
+}
 
 }
 
